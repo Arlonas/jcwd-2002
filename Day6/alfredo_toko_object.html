@@ -1,0 +1,267 @@
+<script>
+  // unutk buka console control shift c
+  // untuk liat variable di dideclare pencet control klik
+  const toko = [
+    {
+      // ini adalah object literal
+      products: "LOTR",
+      productPrices: 50000,
+      productQty: 0,
+      productBought: 0,
+    },
+
+    {
+      products: "Harry Potter",
+      productPrices: 70000,
+      productQty: 0,
+      productBought: 0,
+    },
+    {
+      products: "Sherlock",
+      productPrices: 100000,
+      productQty: 0,
+      productBought: 0,
+    },
+    {
+      products: "Naruto",
+      productPrices: 150000,
+      productQty: 0,
+      productBought: 0,
+    },
+  ];
+  
+  let userTransactions = []
+  const showMenu = (isPrompt = false, message = "") => {
+    let productsList = message + "\n";
+
+    // productsList += message + "\n"
+    
+    for (let i = 0; i < toko.length; i++) {
+      // let tokos = toko[i] tinggal di ganti toko[i] ke tokos
+      
+      productsList += `${i + 1}. ${toko[i].products} || Rp. ${toko[
+        i
+      ].productPrices.toLocaleString()} \n`;
+        //            untuk number only
+        // () ini ada parantesis
+    }
+
+    if (isPrompt) {
+      // user input nomor urut dari productlist
+      let userInput = prompt(productsList);
+      //              prompt(message + productsList)
+      userInput = parseInt(userInput);
+
+      // nomor urut kita harus ubah menjadi index, makanya dikurang 1
+      let userInputIndex = userInput - 1;
+      
+      // return index dari input
+      return userInputIndex;
+      // kalo tidak di return ketika dipanggil functionnya jadi undefined
+    }
+    // alert(message + productsList)
+    alert(productsList);
+  };
+
+  const adminAddData = () => {
+    let userInputNewProduct = prompt("Anda mau menambahkan buku apa?");
+    let userInputNewPrice = prompt("Berapa harga barang baru anda?");
+    // diparseint karena input harganya itu tipe datanya string bkn number
+    userInputNewPrice = parseInt(userInputNewPrice);
+
+    // const newData = {
+    //     products: userInputNewProduct,
+    //   productPrices: userInputNewPrice,
+    //   productQty: 0,
+    //   productBought: 0,
+    // }
+    // untuk menambahkan produk kita yang baru (newProduct)
+    // toko.push(newData)
+    // atau
+    // menyimpan data produk yang baru
+    toko.push({
+      products: userInputNewProduct,
+      productPrices: userInputNewPrice,
+      productQty: 0,
+      productBought: 0,
+    });
+
+    alert("Data tertambahkan!");
+  };
+  const adminDeleteData = () => {
+    // untuk mendapatkan 
+    const userDeleteItemIndex = showMenu(true);
+
+    // console.log(userTransactions)
+    // untuk menghapus sebuah index dalam array
+    toko.splice(userDeleteItemIndex, 1)
+    //. splice menerima dua parameter, parameter 1 menentukan index yang maudi hapus , paramete
+    
+    // console.log(userTransactions)
+  };
+  const adminEditData = () => {
+    const userEditItemIndex = showMenu(true);
+
+    let userEditValue = prompt(
+      `Mau ubah ${toko[userEditItemIndex].products} menjadi apa?`
+    );
+    let userEditPriceValue = prompt("Harganya berapa?");
+    userEditPriceValue = parseInt(userEditPriceValue);
+
+    toko[userEditItemIndex].products = userEditValue;
+    toko[userEditItemIndex].productPrices = userEditPriceValue;
+  };
+  const userAddToCart = () => {
+      const userCartIndex = showMenu(true, "Pilih barang untuk add to cart");
+  
+      let userCartQty = prompt(
+        `Mau beli ${toko[userCartIndex].products} berapa banyak?`
+      );
+      userCartQty = parseInt(userCartQty);
+   //                             di plus sama dengan biar g numpuk tp terakumulasi jadi nambha teruss
+      toko[userCartIndex].productQty += userCartQty;
+      // toko[userCartIndex].productBought += userCartQty;
+    };
+    const userShowCart = (isCheckout = false) => {
+      let userCart = "";
+      let totalPrice = 0;
+  
+      
+      for (let i = 0; i < toko.length; i++) {
+          if(toko[i].productQty == 0){
+              continue
+          }
+        userCart += `${i + 1}. ${toko[i].products} x ${toko[i].productQty} -> Rp. ${(
+          toko[i].productPrices * toko[i].productQty
+        ).toLocaleString()} \n`;
+  
+        totalPrice += toko[i].productPrices * toko[i].productQty;
+      }
+      userCart += `\n Total belanjaan anda adalah Rp. ${totalPrice.toLocaleString()}`;
+  
+      if (isCheckout) {
+        // Tambah baris untuk total price
+  
+        let userPayment = prompt(userCart);
+        userPayment = parseInt(userPayment);
+  
+        // Kalau lebih (kembalian)
+        if (userPayment > totalPrice) {
+          alert(
+            `Kembalian anda sebesar Rp. ${(
+              userPayment - totalPrice
+            ).toLocaleString()}`
+          );
+        } else if (userPayment === totalPrice) {
+          alert("Terima kasih sudah membayar dengan uang pas");
+        } else if (userPayment < totalPrice) {
+          alert(
+            `Uang anda kurang Rp. ${(totalPrice - userPayment).toLocaleString()}`
+          );
+        }
+        // ini akan terjadi jika user checkout
+        for (let i = 0; i < toko.length; i++) {
+            console.log(toko[i])
+           if(toko[i].productQty > 0){
+             userTransactions.push({
+              products: toko[i].products,
+              productPrices: toko[i].productPrices,
+              productQty: toko[i].productQty,
+              productBought: 0,
+             // gunakan spreadoperator untuk copy object
+             // ini untuk mencegah biar transaksnya tidak terpengaruh oleh data toko yang sebenarnya
+              // atau userTransactions.push({...toko[i]}) 
+            })
+               
+           }
+        }
+
+        for (let i = 0; i < toko.length; i++) {
+        //   toko[i].productQty = 0;
+        }
+  
+        return;
+      }
+  
+      alert(userCart);
+    };
+
+  do {
+    // Main menu
+    const userMainMenuInput = prompt(`Login sebagai:
+      1. Admin
+      2. User
+      3. Exit`);
+
+    if (userMainMenuInput == "1") {
+      do {
+        const adminMenuInput = prompt(`Menu:
+      1. Create data
+      2. Delete data
+      3. Show data
+      4. Edit data
+      5. Show report
+      6. Exit`);
+        // Jika user pilih tambah data
+        if (adminMenuInput == "1") {
+          adminAddData();
+        } else if (adminMenuInput == "2") {
+          adminDeleteData();
+        } else if (adminMenuInput == "3") {
+          showMenu();
+        } else if (adminMenuInput == "4") {
+          // Jika user pilih update data
+          adminEditData();
+        } else if (adminMenuInput == "5") {
+          
+         if(userTransactions > 0 ) {
+
+           let reportData = "";
+           let totalTransactionAmount = 0;
+ 
+           for (let i = 0; i < userTransactions.length; i++) {
+             // let userTransactionItem = userTransactions[i]
+             
+             reportData += `${i + 1}. ${userTransactions[i].products} x ${
+               userTransactions[i].productQty
+             } -> Rp. ${(
+               userTransactions[i].productPrices * userTransactions[i].productQty
+             ).toLocaleString()} \n`;
+ 
+             totalTransactionAmount += userTransactions[i].productPrices * userTransactions[i].productQty;
+           }
+ 
+           reportData += `Total besaran transaksi user = Rp. ${totalTransactionAmount.toLocaleString()}`;
+ 
+           alert(reportData);
+         }else{
+           alert("Belum ada transaksi")
+         }
+        } else if (adminMenuInput == "6") {
+          break;
+        }
+      } while (true);
+    } else if (userMainMenuInput == "2") {
+      // Menu user
+      do {
+        const userMenuInput = prompt(`
+          1. Add to cart
+          2. Show cart
+          3. Checkout
+          4. Back`);
+
+        if (userMenuInput == "1") {
+          userAddToCart();
+        } else if (userMenuInput == "2") {
+          userShowCart();
+        } else if (userMenuInput == "3") {
+          userShowCart(true);
+        } else if (userMenuInput == "4") {
+          break;
+        }
+      } while (true);
+    } else if (userMainMenuInput == "3") {
+      break;
+    }
+  } while (true);
+</script>

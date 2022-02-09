@@ -1,0 +1,99 @@
+<script>
+let firstName = prompt("input nama depan")
+let lastName = prompt("input nama belakang")
+let NIM
+do{
+    NIM = prompt(`Input your NIM 
+    Please kindly notice to input numbers`)
+    NIM = parseInt(NIM)
+    
+      if (NIM == "") {
+          
+          
+      }else if(NIM > 0){
+          alert("selamat anda tidak bodoh dan memasukan angka bukan huruf")
+          break
+      }
+
+}while(true)
+    
+
+    
+
+
+
+
+let grades = prompt("Please input your Grades")
+grades = parseInt(grades)
+if (0 > grades || grades > 100) {
+    //grade = invalid number
+    alert("invalid number. Please input numbers between 0-100")
+}else if (95 < grades && grades <= 100) {
+    grades = "A+"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}else if (90 < grades && grades <= 95) {
+    grades = "A"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}else if (85 < grades && grades <= 90) {
+    grades = "B+"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}else if (80 < grades && grades <= 85) {
+    grades = "B"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}else if (75 < grades && grades <= 80) {
+    grades = "C+"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}else if (70 < grades && grades <= 75) {
+    grades = "C"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}else if (65 < grades && grades <= 70) {
+    grades = "D+"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}else if (60 < grades && grades <= 65) {
+    grades = "D"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}else {
+    grades = "F"
+    alert(`Name: ${firstName} ${lastName} 
+NIM: ${NIM} 
+Grades: ${grades}`)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

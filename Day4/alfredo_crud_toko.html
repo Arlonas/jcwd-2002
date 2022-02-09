@@ -1,0 +1,102 @@
+<script>
+  // untuk aktifin prettier shift+alt+f
+  // Buat pilihan menu
+  // 1. Create data
+  // 2. Delete data
+  // 3. Show data
+  // 4. Edit data
+  // 5. Exit
+
+  // Create data
+  // Nama barang (buah), dan ada harga
+  // 2 kali prompt
+  //  - Nama barang
+  //  - Harga barang
+
+  // Delete data
+  // Pilih barang -> hapus
+
+  // Show data
+  // Tampilkan nama barang || harganya.
+  // Untuk harga, gunakan Rp./IDR dan separator harga
+
+  // Edit data
+  // 3 kali prompt
+  //  - Pilih barang
+  //  - Edit nama barang
+  //  - Edit harga barang
+
+  // Exit
+  const items = ["Leci", "Apel", "Jeruk", "Mangga"];
+  const itemPrices = [7000, 5000, 3000, 10000];
+
+  do {
+    const adminMenuInput = prompt(`Menu:
+         1. Create data
+         2. Delete data
+         3. Show data
+         4. Edit data
+         5. Exit`);
+
+    if (adminMenuInput == "1") {
+      let adminInputNewItems = prompt("Anda mau memasukan buah apa?");
+      items.push(adminInputNewItems);
+
+      let adminInputNewItemPrices = prompt(
+        `Silahkan masukan harga ${adminInputNewItems}`
+      );
+      adminInputNewItemPrices = parseInt(adminInputNewItemPrices);
+      itemPrices.push(adminInputNewItemPrices);
+
+      alert("Item berhasil di tambahkan");
+    } else if (adminMenuInput == "2") {
+      let itemList = "";
+
+      for (let i = 0; i < items.length; i++) {
+        itemList += i + 1 + ". " + items[i] + "||" + itemPrices[i].toLocaleString() + "\n";
+      }
+        
+      let adminDeleteItemInput = prompt(itemList);
+      adminDeleteItemInput = parseInt(adminDeleteItemInput);
+
+      let adminDeleteItemIndex = adminDeleteItemInput - 1;
+      items.splice(adminDeleteItemIndex, 1);
+      itemPrices.splice(adminDeleteItemIndex, 1)
+    } else if (adminMenuInput == "3") {
+      let itemList = "";
+
+      for (let i = 0; i < items.length; i++) {
+        itemList += `${i + 1}. ${items[i]} ||${itemPrices[
+          i
+        ].toLocaleString()} \n`;
+      }
+      alert(itemList)
+    } else if (adminMenuInput == "4") {
+      let itemList = "";
+
+      for (let i = 0; i < items.length; i++) {
+        itemList += i + 1 + ". " + items[i] + "||" + itemPrices[i].toLocaleString() + "\n";
+      }
+      
+
+      let adminEditItemInput = prompt(itemList);
+      adminEditItemInput = parseInt(adminEditItemInput);
+
+      let adminEditItemIndex = adminEditItemInput - 1;
+
+      let adminEditItem = prompt(
+        `Mau  ubah ${items[adminEditItemIndex]}jadi apa`
+      );
+      let adminEditItemPrices = prompt(
+        `Masukan harga ${items[adminEditItemIndex]} yang baru `
+      );
+      adminEditItemPrices = parseInt(adminEditItemPrices);
+      
+      items[adminEditItemIndex] = adminEditItem
+      itemPrices[adminEditItemIndex] = adminEditItemPrices
+    } else if (adminMenuInput == "5") {
+      alert(`Goodbye`);
+      break;
+    }
+  } while (true);
+</script>

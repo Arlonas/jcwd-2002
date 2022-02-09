@@ -1,0 +1,137 @@
+<script>
+  // strict equal tiga samd dengan bisa mendeteksi data type kalau 2 sama dengan tidakS
+  // return bisa dipaakk untuk break jadi g ada value
+  // butuh mindset seeprti developer yang mikir tentang user dan admin kebutuhan mereka apa dan gimn kita sebagai 
+  // developer membuat kebutuhan merka jadi kita g cumna belajar coding tp tentang bisnis yg ada di kerjakan jg 
+  
+  let products = ["LOTR", "Harry Potter", "Sherlock", "Naruto"];
+  let productPrices = [10000, 7000, 12000, 15000];
+  let productQty = [0, 0, 0, 0];
+  const showMenu = (isPrompt = false) => {
+    let productsList = "";
+    for (let i = 0; i < products.length; i++) {
+      productsList += `${i + 1}. ${products[i]} || Rp. ${productPrices[
+        i
+      ].toLocaleString()} \n`;
+    }
+    if (isPrompt) {
+      let userInput = prompt(productsList);
+      userInput = parseInt(userInput);
+      let userInputIndex = userInput - 1;
+      return userInputIndex; // biar bisa dipakai berulang kali unutk edit dan delete
+    }
+    alert(productsList);
+  };
+  do {
+    let mainmenu = prompt(`Main Menu
+            Login sebagai:
+            1. Admin
+            2. User
+            3. Exit`);
+            if (mainmenu == "1") {
+              do {
+                // bisa pakai control D untuk select semua atau klik kanan variable tersebut rename
+                let admin = prompt(`Admin :
+                1. Create data
+                2. Show data
+                3. Delete data
+                4. Edit data
+                5. Back`);
+
+        if (admin == "1") {// 
+          let userInputNewProduct = prompt("Anda mau menambahkan buku apa?");
+          let userInputNewPrice = prompt(
+            "Berapa harga barang barang baru anda"
+          );
+          userInputNewPrice = parseInt(userInputNewPrice);
+
+          products.push(userInputNewProduct);
+          productPrices.push(userInputNewPrice);
+          productQty.push(0)
+          alert("Data tertambahkan!");
+        } else if (admin == "2") {
+          showMenu(false); // karena default nya false parameternya jadi returnnya g ke execute
+        } else if (admin == "3") {
+          let showData = showMenu(true);
+          products.splice(showData, 1);
+          productPrices.splice(showData, 1);
+          productQty.splice(showData, 1)
+        } else if (admin == "4") {
+          let deleteData = showMenu(true);
+          let userEditValue = prompt(
+            `Mau  ubah ${products[deleteData]}jadi apa`
+          );
+
+          let userEditPriceValue = prompt("Harganya berapa");
+          userEditPriceValue = parseInt(userEditPriceValue);
+
+          products[deleteData] = userEditItemInput;
+          productPrices[deleteData] = userEditPriceValue;
+        } else if (admin == "5") {
+          break;
+        }
+    }while(true)
+      }else if (mainmenu == "2") {
+        // Menu user lagnsung bikin do while kalo ada seperti ini
+        do{
+
+          let user = prompt(`Let's Shop :
+                  1. Add to cart
+                  2. Show cart
+                  3. Checkout
+                  4. Back
+                  `);
+          if (user == "1") {
+            let userInputBooks = showMenu(true);
+            let userInputQty = prompt(
+              ` Mau Berapa ${products[userInputBooks]} ?`
+            );
+            userInputQty = parseInt(userInputQty);
+            productQty[userInputBooks] = userInputQty;
+          } else if (user == "2") {
+            let showcart = "";
+            for (let i = 0; i < products.length; i++) {
+              showcart += `${i + 1}. ${products[i]} x ${productQty[i]} || Rp. ${(productPrices[
+                i] * productQty[i]).toLocaleString()}  \n`;
+              alert(showcart);
+            }
+          } else if (user == "3") {
+            let cart = "";
+            let payment = "";
+            payment = parseInt(payment);
+            let totalPrice = 0;
+            for (let i = 0; i < products.length; i++) {
+              cart += `${products[i]} x ${productQty[i]} -> Rp. ${
+                productQty[i] * productPrices[i]
+              }\n`;
+              totalPrice += productQty[i] * productPrices[i];
+            }
+            cart += `Total Price: Rp. ${totalPrice.toLocaleString()}`;
+            payment = prompt(cart);
+            if (payment > totalPrice) {
+              let change = payment - totalPrice;
+              alert("Kembalian anda sebesar " + change.toLocaleString());
+            } else if (payment < totalPrice) {
+              let lessChange = totalPrice - payment;
+              alert(
+                "Uang  Anda kurang, tolong jangan cipe : " + "Rp. ",
+                lessChange.toLocaleString()
+              );
+            } else if (payment == totalPrice) {
+              alert("Thank You");
+            }
+            for (let j = 0; j < productQty.length; j++) {
+              productQty[j] = 0;
+            } // untuk ngapus data cartnya yang sudha di masukin user
+
+     
+          } else if (user === "4") {
+          break;
+           }
+        }while(true)
+      } else {
+        break;
+      }
+    
+  } while (true);
+</script>

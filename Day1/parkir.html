@@ -1,0 +1,78 @@
+<script>
+let kendaraan = prompt(`Pilih kendaraan Anda:
+A. Mobil
+B. Motor`)
+
+let durasi = prompt(`Masukan durasi parkir Anda`)
+durasi = parseInt(durasi)
+
+if ( mobil) {
+    let duaJamPertama = 5000
+    let perJam = 2000
+    let max = 50000
+    let biaya
+    if (durasi <= 2) {
+        biaya = duaJamPertama 
+    }else if (durasi > 2) {
+        biaya = duaJamPertama + (perJam *(durasi - 2))
+    }
+    if(biaya > 50000){
+        biaya = 50000
+    }
+    
+    alert("biaya: " + biaya)
+
+
+if(motor){
+    let duaJamPertama = 3000
+    let perJam = 1000
+    let max = 30000
+    let biaya
+    if (durasi <= 2) {
+        biaya = duaJamPertama 
+    }else if (durasi > 2) {
+        biaya = duaJamPertama + (perJam *(durasi - 2))
+    }
+    if(biaya > 50000){
+        biaya = 50000
+    }
+    
+    alert("biaya: " + biaya)
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

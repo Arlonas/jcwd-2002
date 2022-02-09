@@ -1,0 +1,32 @@
+<script>
+    
+    
+    const books = [
+        ["LOTR", ],
+        ["Harry Potter" ],
+        ["Sherlock" ],
+        ["Naruto"],
+        ["One Piece" ],
+        ["Doraemon", ],
+]
+    do{
+        let menu = ""
+        for(let i = 0; i <books.length; i++){
+           menu += `${i + 1}. ${books[i]}\n `
+        }
+          
+       // kalo mau refresh crtl+shift+T
+        let newBook = prompt(menu)
+        if (newBook == "" || newBook == null || newBook == undefined){
+           break
+        }
+        books.push(newBook)
+       
+        
+        
+    }while (true)
+
+
+
+
+</script>

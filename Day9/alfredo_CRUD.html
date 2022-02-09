@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--  ini attribute -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- ini semua element  -->
+    <title>CRUD Data</title>
+    <!--   content -->
+  </head>
+  <body>
+    <style>
+      table,
+      td,
+      th {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+    <table>
+      <!-- Header untuk table -->
+      <thead>
+        <!-- tr = Row table -->
+        <tr>
+          <!-- sama kayak h1 sampai 6  -->
+          <th>No.</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Occupation</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <!-- Data atau body table -->
+      <tbody id="tableData">
+        <!-- unutk isi data -->
+      </tbody>
+      <tbody id="tablegender">
+        <!-- untuk isi gender pria atau wanita -->
+      </tbody>
+      <!-- Footer table -->
+      <tfoot>
+        <tr>
+          <!-- ini nomor g perlu input -->
+          <td></td>
+          <td>
+            <input id="nameInput" type="text" />
+          </td>
+          <td>
+            <!-- beralku untuk semua inputan text jg bisa label -->
+            <!-- di label yg penting fornya -->
+            <label for="genderMan">
+              <input checked id="genderMan" name="gender" type="radio" value="Man" />Man
+            </label>
+            <br />
+            <label for="genderWoman">
+              <input
+                id="genderWoman"
+                name="gender"
+                type="radio"
+                value="Woman"
+              />Woman
+            </label>
+            <br />
+            <label for="genderOther">
+              <input
+                id="genderOther"
+                name="gender"
+                type="radio"
+                value="Woman"
+              />Other
+            </label>
+          </td>
+          <td>
+            <select id="occupationInput">
+              <option>Software Developer</option>
+              <option>Digital Marketing</option>
+              <option>UI UX Designer</option>
+              <option>Data Scientist</option>
+            </select>
+            <!-- <input id="occupationInput" type="text" /> -->
+          </td>
+          <td>
+            <button onclick="addData()">Add</button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <script>
+      class Person {
+        constructor(fullName, gender, occupation) {
+          this.fullName = fullName;
+          this.occupation = occupation;
+          this.gender = gender;
+        }
+      }
+
+      let data = [
+        new Person("Marci", "Man", "Software Developer"),
+        new Person("Bambang", "Man", "CEO"),
+        new Person("Ngebull", "Man", "UI/UX"),
+        new Person("Santoso", "Man", "Data Scientist"),
+      ];
+      const renderData = () => {
+        let htmlResult = "";
+
+        //          callback function
+        //            value
+        data.forEach((person, idx) => {
+          htmlResult += `
+    <tr>
+      <td>${idx + 1}</td>
+      <td>${person.fullName}</td>
+      <td>${person.gender}</td>
+      <td>${person.occupation}</td>
+
+
+      <td>
+        <button onclick="deleteData(${idx})">Delete</button>
+      </td>
+    </tr>
+    `;
+        });
+        //                                       content
+        document.getElementById("tableData").innerHTML = htmlResult;
+      };
+
+      renderData();
+
+      const addData = () => {
+        const fullNameInput = document.getElementById("nameInput").value;
+        console.log(fullNameInput);
+        const occupationInput =
+          document.getElementById("occupationInput").value;
+        console.log(occupationInput);
+        const isManChecked = document.getElementById("genderMan").checked;
+        // rata rata boolean itu variblenya yes or no question
+        const isWomanChecked = document.getElementById("genderWoman").checked;
+
+        const isOtherChecked = document.getElementById("genderOther").checked;
+
+        let gender;
+        // kalo g ada if hasilnya kosong di add datanya
+        if (isManChecked) {// jika radio Man dipilih / checked
+          // gender = document.getElementById("genderMan").value
+          // atau
+          gender = "Man";
+        } else if (isWomanChecked) {// jika radio Woman dipilih / checked
+          gender = "Woman";
+        } else if (isOtherChecked) {// jika radio Other dipilih / checked
+          gender = "Other";
+        }
+
+        // input validation
+        if (!fullNameInput || !occupationInput) {
+          alert(
+            "Kedua field harus di isi, jangan goblok udh bisa pake laptop harus di kasih peringatan jg tolol namanya"
+          );
+          return;
+        }
+        const newPerson = new Person(fullNameInput, gender, occupationInput);
+
+        data.push(newPerson);
+
+        console.log(addData);
+        // tampilkan kembali data yang baru
+        renderData();
+        document.getElementById("nameInput").value = "";
+        document.getElementById("genderOthersInput")
+      };
+
+      const deleteData = (deleteIdx) => {
+        // alert(deleteIdx)
+
+        data.splice(deleteIdx, 1);
+        renderData();
+      };
+    </script>
+  </body>
+</html>

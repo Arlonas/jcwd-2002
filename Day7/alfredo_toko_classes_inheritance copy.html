@@ -1,0 +1,433 @@
+<script>
+  // untuk gedein fontsize cntrl ,
+
+  // kalo bisa jgn di singkat propertynya pake full name kayak qty jadi quantity
+  class Product {
+    constructor(productNames, prices) {
+      this.productNames = productNames;
+      this.prices = prices;
+      this.qty = 0;
+      this.bought = 0;
+    }
+
+    calculateTotalPrice = () => {
+      return this.prices * this.qty;
+    };
+
+    toString = () => {
+      return `${this.productNames} || Rp. ${this.prices.toLocaleString()} x ${
+        this.qty
+      } = ${this.calculateTotalPrice().toLocaleString()} `;
+    };
+    toShowMenu = () => {
+      return `${this.productNames} || Rp. ${this.prices.toLocaleString()} \n`;
+    };
+  }
+
+  let userTransactions = [];
+  class Book extends Product {
+    constructor(productNames, prices) {
+      // super di gunakan untuk memanggil/mengisi constructor parent class(Product)
+      super(productNames, prices);
+    }
+  }
+  const book = [
+    new Book("LOTR", 50000),
+    new Book("Harry Potter", 70000),
+    new Book("Sherlock", 100000),
+    new Book("Naruto", 150000),
+  ];
+
+  class Tshirt extends Product {
+    constructor(productNames, prices, size) {
+      super(productNames, prices);
+      this.size = size;
+    }
+  }
+  const tshirt = [
+    new Tshirt("S", 100000),
+    new Tshirt("M", 100000),
+    new Tshirt("L", 100000),
+    new Tshirt("XL", 100000),
+  ];
+  const bookShowMenu = (isPrompt = false, message = "") => {
+    let productsList = message + "\n";
+
+    for (let i = 0; i < book.length; i++) {
+      productsList += `${i + 1}. ${book[i].toShowMenu()}`;
+    }
+
+    if (isPrompt) {
+      let userInput = prompt(productsList);
+
+      userInput = parseInt(userInput);
+
+      let userInputIndex = userInput - 1;
+
+      return userInputIndex;
+    }
+
+    alert(productsList);
+  };
+
+  const tshirtShowMenu = (isPrompt = false, message = "") => {
+    let productsList = message + "\n";
+
+    for (let i = 0; i < tshirt.length; i++) {
+      productsList += `${i + 1}. ${tshirt[i].toShowMenu()}`;
+    }
+
+    if (isPrompt) {
+      let userInput = prompt(productsList);
+
+      userInput = parseInt(userInput);
+
+      let userInputIndex = userInput - 1;
+
+      return userInputIndex;
+    }
+
+    alert(productsList);
+  };
+  const adminAddData = (type) => {
+    let userInputNewProduct = prompt("Anda mau menambahkan buku apa?");
+    let userInputNewPrice = prompt("Berapa harga barang baru anda?");
+    // diparseint karena input harganya itu tipe datanya string bkn number
+    userInputNewPrice = parseInt(userInputNewPrice);
+    if (type == 1) {
+      book.push(new Book(userInputNewProduct, userInputNewPrice));
+    } else if (type == 2) {
+      tshirt.push(new Tshirt(userInputNewProduct, userInputNewPrice));
+    }
+
+    alert("Data tertambahkan!");
+  };
+
+  const adminDeleteData = (type) => {
+    if (type == 1) {
+      const userDeleteItemIndex = bookShowMenu(true);
+      book.splice(userDeleteItemIndex, 1);
+    } else if (type == 2) {
+      const userDeleteItemIndex = tshirtShowMenu(true);
+      tshirt.splice(userDeleteItemIndex, 1);
+      // g perlu diaksih new Book lgi karena .splice itu lgsng apus index di arraynay artinya
+      // ngpaus satu object
+    }
+  };
+  const adminEditData = (type) => {
+    if (type == 1) {
+      const userEditItemIndex = bookShowMenu(true);
+      //  productNames
+      let userEditValue = prompt(
+        `Mau ubah ${book[userEditItemIndex].productNames} menjadi apa?`
+      );
+      //  prices
+      let userEditPriceValue = prompt("Harganya berapa?");
+      userEditPriceValue = parseInt(userEditPriceValue);
+      // Spread dirinya sendiri (properties lama)
+      // Lalu unutk productName, price, author, dan yearReleased
+      // kita timpa valuenya
+      book[userEditItemIndex] = {
+        ...book[userEditItemIndex],
+        productNames: userEditValue,
+        prices: userEditPriceValue,
+        // atau
+        // productNames
+        //prices
+      };
+    } else if (type == 2) {
+      const userEditItemIndex = tshirtShowMenu(true);
+
+      let userEditValue = prompt(
+        `Mau ubah ${tshirt[userEditItemIndex].productNames} menjadi apa?`
+      );
+      let userEditPriceValue = prompt("Harganya berapa?");
+      userEditPriceValue = parseInt(userEditPriceValue);
+
+      book[userEditItemIndex].products = userEditValue;
+      book[userEditItemIndex].productPrices = userEditPriceValue;
+    }
+  };
+  const userAddToCart = (type) => {
+    if (type == 1) {
+      const userCartIndex = bookShowMenu(
+        true,
+        "Pilih barang untuk add to cart"
+      );
+
+      console.log(book[userCartIndex])
+      let userCartQty = prompt(
+        `Mau beli ${book[userCartIndex].productNames} berapa banyak?`
+        );
+      userCartQty = parseInt(userCartQty);
+
+      book[userCartIndex].qty += userCartQty;
+    } else if (type == 2) {
+      const userCartIndex = tshirtShowMenu(
+        true,
+        "Pilih barang untuk add to cart"
+      );
+
+      let userCartQty = prompt(
+        `Mau beli baju size ${tshirt[userCartIndex].productNames} berapa banyak?`
+      );
+      userCartQty = parseInt(userCartQty);
+
+      tshirt[userCartIndex].qty += userCartQty;
+    }
+  };
+  const userShowCart = (isCheckout = false, type) => {
+    if (type == 1) {
+      let userCart = "";
+      let totalPrice = 0;
+
+      for (let i = 0; i < book.length; i++) {
+        // let books = book[i];
+        if (book[i].qty == 0) {
+          continue;
+        }
+        userCart += `${i + 1}. ${book[i].productNames} x ${
+          book[i].qty
+        } -> Rp. ${(book[i].prices * book[i].qty).toLocaleString()} \n`;
+
+        totalPrice += book[i].qty * book[i].prices;
+      }
+      userCart += `\n Total belanjaan anda adalah Rp. ${totalPrice.toLocaleString()}`;
+      if (isCheckout) {
+        // Untuk pembayaran customer/user
+        let userPayment = prompt(userCart);
+        // Kenapa parseInt? Supaya jadi number
+        userPayment = parseInt(userPayment);
+
+        // Kalau lebih (kembalian)
+        if (userPayment > totalPrice) {
+          // Tampilkan kembalian untuk user
+          alert(
+            `Kembalian anda sebesar Rp. ${(
+              userPayment - totalPrice
+            ).toLocaleString()}`
+          );
+        } else if (userPayment === totalPrice) {
+          alert("Terima kasih sudah membayar dengan uang pas");
+        } else if (userPayment < totalPrice) {
+          // Tampilkan user kurang berapa uangnya? (harga - pembayaran)
+          alert(
+            `Uang anda kurang Rp. ${(
+              totalPrice - userPayment
+            ).toLocaleString()}`
+          );
+        }
+
+        // Untuk menambahkan barang2 yang user udah add to cart dan checkout
+        // ke dalam list transaksi
+
+        // Q: Kenapa dipisah array-nya?
+        // A: Supaya transaksi2 sebelumnya tidak terpengaruh oleh data products
+        //    jika terjadi perubahan
+        for (let i = 0; i < book.length; i++) {
+          if (book[i].qty > 0) {
+            // Gunakan spread operator untuk copy object
+            userTransactions.push({ ...book[i] });
+          }
+          // book[i].qty = 0;
+        }
+
+        // Supaya function-nya berhenti, dan tidak melakukan alert
+        return;
+      }
+
+      alert(userCart);
+    } else if (type == 2) {
+      let userCart = "";
+      let totalPrice = 0;
+
+      for (let i = 0; i < tshirt.length; i++) {
+        // let tshirts = tshirt[i];
+        if (tshirt[i].qty == 0) {
+          continue;
+        }
+        userCart += `${i + 1}. ${tshirt[i].productNames} x ${
+          tshirt[i].qty
+        } -> Rp. ${(tshirt[i].prices * tshirt[i].qty).toLocaleString()} \n`;
+
+        totalPrice += tshirt[i].qty * tshirt[i].prices;
+      }
+      userCart += `\n Total belanjaan anda adalah Rp. ${totalPrice.toLocaleString()}`;
+      if (isCheckout) {
+        // Untuk pembayaran customer/user
+        let userPayment = prompt(userCart);
+        // Kenapa parseInt? Supaya jadi number
+        userPayment = parseInt(userPayment);
+
+        // Kalau lebih (kembalian)
+        if (userPayment > totalPrice) {
+          // Tampilkan kembalian untuk user
+          alert(
+            `Kembalian anda sebesar Rp. ${(
+              userPayment - totalPrice
+            ).toLocaleString()}`
+          );
+        } else if (userPayment === totalPrice) {
+          alert("Terima kasih sudah membayar dengan uang pas");
+        } else if (userPayment < totalPrice) {
+          // Tampilkan user kurang berapa uangnya? (harga - pembayaran)
+          alert(
+            `Uang anda kurang Rp. ${(
+              totalPrice - userPayment
+            ).toLocaleString()}`
+          );
+        }
+
+        // Untuk menambahkan barang2 yang user udah add to cart dan checkout
+        // ke dalam list transaksi
+
+        // Q: Kenapa dipisah array-nya?
+        // A: Supaya transaksi2 sebelumnya tidak terpengaruh oleh data products
+        //    jika terjadi perubahan
+        for (let i = 0; i < tshirt.length; i++) {
+          console.log(tshirt[i])
+          if (tshirt[i].qty > 0) {
+            // Gunakan spread operator untuk copy object
+            userTransactions.push({ ...tshirt[i] });
+          }
+          // tshirt[i].qty = 0;
+        }
+
+        // Supaya function-nya berhenti, dan tidak melakukan alert
+        return;
+      }
+
+      alert(userCart);
+    }
+  };
+
+  do {
+    // Main menu
+    const userMainMenuInput = prompt(`Login sebagai:
+        1. Admin
+        2. User
+        3. Exit`);
+
+    if (userMainMenuInput == "1") {
+      do {
+        const adminMenuInput = prompt(`Menu:
+                1. Create data
+                2. Delete data
+                3. Show data
+                4. Edit data
+                5. Show report
+                6. Exit`);
+        // Jika user pilih tambah data
+        if (adminMenuInput == "1") {
+          let choice = prompt(`choose your product?
+                    1. Books
+                    2. T-shirt`);
+
+          if (choice == "1") {
+            bookShowMenu(false, "List of products:");
+            adminAddData(1);
+          } else if (choice == "2") {
+            tshirtShowMenu(false, "List of products:");
+            adminAddData(2);
+          }
+        } else if (adminMenuInput == "2") {
+          let choice = prompt(`choose your product?
+          1. Books
+          2. T-shirt`);
+          if (choice == "1") {
+            adminDeleteData(1);
+          } else if (choice == "2") {
+            adminDeleteData(2);
+          }
+        } else if (adminMenuInput == "3") {
+          let choice = prompt(`choose your product?
+          1. Books
+          2. T-shirt`);
+
+          if (choice == "1") {
+            bookShowMenu(false, "List of products:");
+          } else if (choice == "2") {
+            tshirtShowMenu(false, "List of products:");
+          }
+        } else if (adminMenuInput == "4") {
+          let choice = prompt(`choose your product?
+          1. Books
+          2. T-shirt`);
+          if (choice == "1") {
+            adminEditData(1);
+          } else if (choice == "2") {
+            adminEditData(2);
+          }
+        } else if (adminMenuInput == "5") {
+          if (userTransactions.length > 0) {
+            let reportData = "";
+            let totalTransactionAmount = 0;
+
+            for (let i = 0; i < userTransactions.length; i++) {
+              // let userTransactionItem = userTransactions[i]
+
+              reportData += `${i + 1}. ${userTransactions[i].productNames} x ${
+                userTransactions[i].qty
+              } -> Rp. ${(
+                userTransactions[i].prices * userTransactions[i].qty
+              ).toLocaleString()} \n`;
+
+              totalTransactionAmount +=
+                userTransactions[i].prices * userTransactions[i].qty;
+            }
+
+            reportData += `Total besaran transaksi user = Rp. ${totalTransactionAmount.toLocaleString()}`;
+
+            alert(reportData);
+          } else {
+            alert("Belum ada transaksi");
+          }
+        } else if (adminMenuInput == "6") {
+          break;
+        }
+      } while (true);
+    } else if (userMainMenuInput == "2") {
+      // Menu user
+      do {
+        const userMenuInput = prompt(`
+            1. Add to cart
+            2. Show cart
+            3. Checkout
+            4. Back`);
+
+        if (userMenuInput == "1") {
+          let choice = prompt(`choose your product?
+          1. Books
+          2. T-shirt`);
+          if (choice == "1") {
+            userAddToCart(1);
+          } else if (choice == "2") {
+            userAddToCart(2);
+          }
+        } else if (userMenuInput == "2") {
+          let choice = prompt(`choose your product?
+          1. Books
+          2. T-shirt`);
+          if (choice == "1") {
+            userShowCart(false, 1);
+          } else if (choice == "2") {
+            userShowCart(false, 2);
+          }
+        } else if (userMenuInput == "3") {
+          let choice = prompt(`choose your product?
+          1. Books
+          2. T-shirt`);
+          if (choice == "1") {
+            userShowCart(true, 1);
+          } else if (choice == "2") {
+            userShowCart(true, 2);
+          }
+        } else if (userMenuInput == "4") {
+          break;
+        }
+      } while (true);
+    } else if (userMainMenuInput == "3") {
+      break;
+    }
+  } while (true);
+</script>

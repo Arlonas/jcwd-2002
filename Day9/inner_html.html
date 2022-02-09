@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="welcome1">Hello World</h1>
+    <h1 id="welcomel">Halo Dunia ih</h1>
+    <h1 id="welcomee">Welocme to my paradise</h1>
+    <input id= "welcomeInput" type="text">
+    <button onclick="alertValue()">pencet woi</button>
+
+    <script>
+        const modifyInnerHtml = () => {
+            // const arr = document.getElementsByTagName("h1")[0]
+
+            // console.log(arr)
+            // arr.innerHtml = "Halo kawan kawan"
+            // Selector di html
+            document.getElementById("welcome1").innerHTML = "Halo banci"
+        }
+
+        const alertValue = () => {
+            // isi dari input text
+            const inputValue = document.getElementById("WelcomeInput").value
+            
+        //                                         kalo pakai += jadi nambah bkn nimpa
+            document.getElementById("Welcome1").innerHTML = inputValue
+
+            
+            // alert(inputValue)
+        }
+        // modifyInnerHtml()
+    </script>
+</body>
+</html>
