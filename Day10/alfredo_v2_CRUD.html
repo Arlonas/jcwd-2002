@@ -153,7 +153,7 @@
             <br />
             <label for="editgenderOther">
               <input
-                ${person.gender == "Others" ? "checked" : ""}
+                ${person.gender !== "Man" && person.gender !== "Woman" ? "checked": ""}
                 id="editgenderOther"
                 name="gender"
                 type="radio"
@@ -179,7 +179,7 @@
         <td>${person.gender}</td>
         <td>${person.occupation}</td>
         <td>
-          <button onclick="renderData()">Edit</button>
+          <button onclick="renderData(${idx})">Edit</button>
         </td>
   
         <td>
